@@ -6,15 +6,24 @@
         <h1 class="mt-5">Witaj w mojej bibliotece filmów</h1>
         <p class="lead">Znajdziesz tutaj tylko najlepsze tytuły!</p>
     </div>
+    <div class="col-lg-12 mb-4">
+        {% for list in available_lists %}
+            {% if selected_list==list and query_string %}
+                <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-outline-info active">{{ list|replace("_"," ")|title }}</a>
+            {% else %}
+                <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-outline-info">{{ list|replace("_"," ")|title }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
     {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
-            <img class="card-img-top" src={{ tmdb_poster_url(movie.poster_path, "w500") }} alt="">   
+            <img class="card-img-top" src={{ tmdb_picture_url(movie.poster_path, "w500") }} alt="">   
             <div class="card-body" style="background: rgb(181, 182, 183); text-align: center;">
                 <h4 class="card-title" style="vertical-align: super;">{{ movie.title }}</h4>
             </div>
             <div class="card-footer text-center">
-                <a href="#" class="btn btn-primary">Pokaż więcej</a>
+                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-primary">Pokaż więcej</a>
             </div> 
         </div>
     </div>
